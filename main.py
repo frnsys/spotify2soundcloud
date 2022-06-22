@@ -45,6 +45,10 @@ def search_soundcloud(query: str):
     resp = requests.get('https://api-v2.soundcloud.com/search/tracks', params=params, headers=headers)
     json = resp.json()
     results = json['collection']
+
+    # Sort by number of likes, assuming
+    # the more likes, the more legit it is
+    results = sorted(results, key=lambda r: -(r['likes_count'] or 0))
     return results
 
 def main(playlist_id: str):
